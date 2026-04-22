@@ -1,0 +1,107 @@
+name: KoalaManaging
+version: '${project.version}'
+main: com.koala.managing.KoalaManaging
+api-version: '1.21'
+description: A comprehensive server management plugin
+authors: [ KoalaDev ]
+prefix: KoalaManaging
+
+commands:
+  tempban:
+    description: Temporarily ban a player
+    usage: /tempban <player> <duration> <reason>
+    permission: koala.tempban
+  tempmute:
+    description: Temporarily mute a player
+    usage: /tempmute <player> <duration> <reason>
+    permission: koala.tempmute
+  unban:
+    description: Unban a player
+    usage: /unban <player>
+    permission: koala.unban
+  unmute:
+    description: Unmute a player
+    usage: /unmute <player>
+    permission: koala.unmute
+  freeze:
+    description: Freeze a player
+    usage: /freeze <player>
+    permission: koala.freeze
+  unfreeze:
+    description: Unfreeze a player
+    usage: /unfreeze <player>
+    permission: koala.freeze
+  broadcast:
+    description: Broadcast a message to all players
+    usage: /broadcast <message>
+    permission: koala.broadcast
+  echest:
+    description: View or clear a player's ender chest
+    usage: /echest <player> clear
+    permission: koala.echest
+  inventory:
+    description: View or clear a player's inventory
+    usage: /inventory <player> clear
+    permission: koala.inventory
+  kick:
+    description: Kick a player from the server
+    usage: /kick <player> [reason]
+    permission: koala.kick
+  warn:
+    description: Warn a player
+    usage: /warn <player> <reason>
+    permission: koala.warn
+  warnings:
+    description: View a player's warnings
+    usage: /warnings <player>
+    permission: koala.warnings
+
+permissions:
+  koala.*:
+    description: Grants all KoalaManaging permissions
+    default: op
+    children:
+      koala.tempban: true
+      koala.tempmute: true
+      koala.unban: true
+      koala.unmute: true
+      koala.freeze: true
+      koala.broadcast: true
+      koala.echest: true
+      koala.inventory: true
+      koala.kick: true
+      koala.warn: true
+      koala.warnings: true
+  koala.tempban:
+    description: Allows use of /tempban
+    default: op
+  koala.tempmute:
+    description: Allows use of /tempmute
+    default: op
+  koala.unban:
+    description: Allows use of /unban
+    default: op
+  koala.unmute:
+    description: Allows use of /unmute
+    default: op
+  koala.freeze:
+    description: Allows use of /freeze and /unfreeze
+    default: op
+  koala.broadcast:
+    description: Allows use of /broadcast
+    default: op
+  koala.echest:
+    description: Allows use of /echest
+    default: op
+  koala.inventory:
+    description: Allows use of /inventory
+    default: op
+  koala.kick:
+    description: Allows use of /kick
+    default: op
+  koala.warn:
+    description: Allows use of /warn
+    default: op
+  koala.warnings:
+    description: Allows use of /warnings
+    default: op
