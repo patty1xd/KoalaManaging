@@ -1,0 +1,12 @@
+# KoalaManaging Configuration
+
+messages:
+  prefix: "&8[&bKoala&8] &r"
+  no-permission: "&cYou don't have permission to use this command."
+  player-not-found: "&cPlayer not found."
+  broadcast-format: "&4&l[BROADCAST] &r&f{message}"
+
+# Duration format examples: 10s, 5m, 2h, 1d, 1w
+settings:
+  max-warnings-before-ban: 3
+  freeze-blindness: true
