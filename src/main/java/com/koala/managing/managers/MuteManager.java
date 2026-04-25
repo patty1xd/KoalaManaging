@@ -33,7 +33,10 @@ public class MuteManager {
         if (data.contains("mutes")) {
             for (String uuidStr : data.getConfigurationSection("mutes").getKeys(false)) {
                 UUID uuid = UUID.fromString(uuidStr);
-                mutes.put(uuid, data.getLong("mutes." + uuidStr + ".expiry"));
+                long expiry = data.getLong("mutes." + uuidStr + ".expiry");
+                // Skip already-expired entries on load
+                if (System.currentTimeMillis() > expiry) continue;
+                mutes.put(uuid, expiry);
                 reasons.put(uuid, data.getString("mutes." + uuidStr + ".reason", "No reason given"));
                 names.put(uuid, data.getString("mutes." + uuidStr + ".name", uuidStr));
             }
@@ -41,6 +44,8 @@ public class MuteManager {
     }
 
     public void save() {
+        // Wipe the entire mutes section first, then rewrite only active mutes
+        data.set("mutes", null);
         for (Map.Entry<UUID, Long> entry : mutes.entrySet()) {
             String path = "mutes." + entry.getKey();
             data.set(path + ".expiry", entry.getValue());
@@ -52,16 +57,24 @@ public class MuteManager {
 
     public void addMute(UUID uuid, String name, long durationMillis, String reason) {
         mutes.put(uuid, System.currentTimeMillis() + durationMillis);
-        reasons.put(uuid, reason); names.put(uuid, name); save();
+        reasons.put(uuid, reason);
+        names.put(uuid, name);
+        save();
     }
 
     public void removeMute(UUID uuid) {
-        mutes.remove(uuid); reasons.remove(uuid); names.remove(uuid); save();
+        mutes.remove(uuid);
+        reasons.remove(uuid);
+        names.remove(uuid);
+        save(); // save() now wipes the YAML entry too
     }
 
     public boolean isMuted(UUID uuid) {
         if (!mutes.containsKey(uuid)) return false;
-        if (System.currentTimeMillis() > mutes.get(uuid)) { removeMute(uuid); return false; }
+        if (System.currentTimeMillis() > mutes.get(uuid)) {
+            removeMute(uuid);
+            return false;
+        }
         return true;
     }
 
