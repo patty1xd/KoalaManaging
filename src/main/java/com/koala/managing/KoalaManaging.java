@@ -1,10 +1,13 @@
 package com.koala.managing;
 
+import com.koala.managing.broadcast.AutoBroadcastTask;
 import com.koala.managing.commands.*;
+import com.koala.managing.listeners.ChatFilterListener;
+import com.koala.managing.listeners.ChatMuteListener;
 import com.koala.managing.listeners.FreezeListener;
 import com.koala.managing.managers.BanManager;
-import com.koala.managing.managers.MuteManager;
 import com.koala.managing.managers.FreezeManager;
+import com.koala.managing.managers.MuteManager;
 import com.koala.managing.managers.WarnManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,7 +34,10 @@ public class KoalaManaging extends JavaPlugin {
         registerCommands();
 
         getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
-        getServer().getPluginManager().registerEvents(new com.koala.managing.listeners.ChatMuteListener(this), this);
+        getServer().getPluginManager().registerEvents(new ChatMuteListener(this), this);
+        getServer().getPluginManager().registerEvents(new ChatFilterListener(this), this);
+
+        startAutoBroadcast();
 
         getLogger().info("KoalaManaging enabled successfully!");
     }
@@ -42,6 +48,12 @@ public class KoalaManaging extends JavaPlugin {
         muteManager.save();
         warnManager.save();
         getLogger().info("KoalaManaging disabled.");
+    }
+
+    private void startAutoBroadcast() {
+        if (!getConfig().getBoolean("auto-broadcast.enabled", true)) return;
+        long intervalTicks = getConfig().getLong("auto-broadcast.interval", 300) * 20L;
+        new AutoBroadcastTask(this).runTaskTimer(this, intervalTicks, intervalTicks);
     }
 
     private void registerCommands() {
