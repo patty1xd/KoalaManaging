@@ -19,7 +19,7 @@ public class AutoBroadcastTask extends BukkitRunnable {
     private int index = 0;
 
     // Matches [display text](url)
-    private static final Pattern LINK_PATTERN = Pattern.compile("\[([^]]+)]\(([^)]+)\)");
+    private static final Pattern LINK_PATTERN = Pattern.compile("\\[([^\\]]+)\\]\\(([^)]+)\\)");
 
     public AutoBroadcastTask(KoalaManaging plugin) {
         this.plugin = plugin;
@@ -42,7 +42,6 @@ public class AutoBroadcastTask extends BukkitRunnable {
         Matcher matcher = LINK_PATTERN.matcher(raw);
 
         if (!matcher.find()) {
-            // No links — plain colored broadcast
             String plain = plugin.colorize(raw);
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(plain);
@@ -50,14 +49,12 @@ public class AutoBroadcastTask extends BukkitRunnable {
             return;
         }
 
-        // Build a TextComponent with clickable link parts
         for (Player p : Bukkit.getOnlinePlayers()) {
             TextComponent full = new TextComponent();
             int last = 0;
             matcher.reset();
 
             while (matcher.find()) {
-                // Text before the link
                 if (matcher.start() > last) {
                     String before = plugin.colorize(raw.substring(last, matcher.start()));
                     full.addExtra(new TextComponent(TextComponent.fromLegacyText(before)));
@@ -75,7 +72,6 @@ public class AutoBroadcastTask extends BukkitRunnable {
                 last = matcher.end();
             }
 
-            // Text after the last link
             if (last < raw.length()) {
                 String after = plugin.colorize(raw.substring(last));
                 full.addExtra(new TextComponent(TextComponent.fromLegacyText(after)));
