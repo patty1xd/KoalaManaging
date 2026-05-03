@@ -6,7 +6,45 @@ messages:
   player-not-found: "&cPlayer not found."
   broadcast-format: "&4&l[BROADCAST] &r&f{message}"
 
-# Duration format examples: 10s, 5m, 2h, 1d, 1w
 settings:
   max-warnings-before-ban: 3
   freeze-blindness: true
+
+# -------------------------------------------------------
+# CHAT FILTER
+# -------------------------------------------------------
+# Each entry: word -> mute duration (use 'none' for no mute, just block)
+# Duration format: 10s, 5m, 2h, 1d, 1w
+chat-filter:
+  enabled: true
+  block-message: "&cYour message was blocked by the chat filter."
+  mute-message: "&cYou have been automatically muted for &f{duration} &cfor using a blocked word."
+  notify-staff: true   # sends alert to anyone with koala.tempban permission
+  staff-notify-message: "&8[&cFilter&8] &7{player} &7triggered filter word '&f{word}&7' and was muted for &f{duration}&7."
+
+  words:
+    nigga:
+      mute: "1h"
+    nigger:
+      mute: "24h"
+    fuck:
+      mute: "10m"
+    shit:
+      mute: "none"
+    bitch:
+      mute: "5m"
+    asshole:
+      mute: "5m"
+
+# -------------------------------------------------------
+# AUTO BROADCAST
+# -------------------------------------------------------
+auto-broadcast:
+  enabled: true
+  interval: 300   # seconds between broadcasts (300 = 5 minutes)
+  # Use & for colors. Use [text](url) for clickable links.
+  # Example: "Join our Discord: [Click here](https://discord.gg/yourlink)"
+  messages:
+    - "&b&lKoala Network &8| &7Join our Discord: [&bClick here&7](https://discord.gg/yourlink)"
+    - "&b&lKoala Network &8| &7Check our store: [&aClick here&7](https://store.yourserver.net)"
+    - "&b&lKoala Network &8| &7Website: [&eKoalaNetwork.net&7](https://yourwebsite.net)"
