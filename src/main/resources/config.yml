@@ -26,15 +26,15 @@ chat-filter:
     nigga:
       mute: "1h"
     nigger:
-      mute: "24h"
-    fuck:
-      mute: "10m"
-    shit:
-      mute: "none"
-    bitch:
-      mute: "5m"
-    asshole:
-      mute: "5m"
+      mute: "3h"
+    nga:
+      mute: "30m"
+    ngas:
+      mute: "30m"
+    rape:
+      mute: "1h"
+    retard:
+      mute: "30m"
 
 # -------------------------------------------------------
 # AUTO BROADCAST
