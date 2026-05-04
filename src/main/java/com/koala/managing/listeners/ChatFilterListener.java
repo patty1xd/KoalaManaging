@@ -20,8 +20,8 @@ public class ChatFilterListener implements Listener {
         this.plugin = plugin;
     }
 
-    // Run HIGHEST so we check after ChatMuteListener already cancelled muted players
-    @EventHandler(priority = EventPriority.HIGHEST)
+    // Run LOW so we check before FFA's NORMAL priority handler cancels the event
+    @EventHandler(priority = EventPriority.LOW)
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
         if (!plugin.getConfig().getBoolean("chat-filter.enabled", true)) return;
