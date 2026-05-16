@@ -5,6 +5,7 @@ import com.koala.managing.commands.*;
 import com.koala.managing.listeners.ChatFilterListener;
 import com.koala.managing.listeners.ChatMuteListener;
 import com.koala.managing.listeners.FreezeListener;
+import com.koala.managing.listeners.BanLoginListener;
 import com.koala.managing.managers.BanManager;
 import com.koala.managing.managers.FreezeManager;
 import com.koala.managing.managers.MuteManager;
@@ -36,6 +37,7 @@ public class KoalaManaging extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FreezeListener(freezeManager), this);
         getServer().getPluginManager().registerEvents(new ChatMuteListener(this), this);
         getServer().getPluginManager().registerEvents(new ChatFilterListener(this), this);
+        getServer().getPluginManager().registerEvents(new BanLoginListener(this), this);
 
         startAutoBroadcast();
 
