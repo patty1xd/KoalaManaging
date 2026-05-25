@@ -2,6 +2,7 @@ package com.koala.managing;
 
 import com.koala.managing.broadcast.AutoBroadcastTask;
 import com.koala.managing.commands.*;
+import com.koala.managing.discord.DiscordBot;
 import com.koala.managing.listeners.ChatFilterListener;
 import com.koala.managing.listeners.ChatMuteListener;
 import com.koala.managing.listeners.FreezeListener;
@@ -9,6 +10,7 @@ import com.koala.managing.listeners.BanLoginListener;
 import com.koala.managing.managers.BanManager;
 import com.koala.managing.managers.FreezeManager;
 import com.koala.managing.managers.MuteManager;
+import com.koala.managing.managers.ReportManager;
 import com.koala.managing.managers.WarnManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,6 +23,8 @@ public class KoalaManaging extends JavaPlugin {
     private MuteManager muteManager;
     private FreezeManager freezeManager;
     private WarnManager warnManager;
+    private ReportManager reportManager;
+    private DiscordBot discordBot;
 
     @Override
     public void onEnable() {
@@ -31,6 +35,10 @@ public class KoalaManaging extends JavaPlugin {
         muteManager = new MuteManager(this);
         freezeManager = new FreezeManager(this);
         warnManager = new WarnManager(this);
+        reportManager = new ReportManager(this);
+
+        discordBot = new DiscordBot(this);
+        discordBot.start();
 
         registerCommands();
 
@@ -46,6 +54,7 @@ public class KoalaManaging extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (discordBot != null) discordBot.shutdown();
         banManager.save();
         muteManager.save();
         warnManager.save();
@@ -82,6 +91,9 @@ public class KoalaManaging extends JavaPlugin {
         Objects.requireNonNull(getCommand("warn")).setTabCompleter(new WarnCommand(this));
         Objects.requireNonNull(getCommand("warnings")).setExecutor(new WarningsCommand(this));
         Objects.requireNonNull(getCommand("warnings")).setTabCompleter(new WarningsCommand(this));
+        ReportCommand reportCmd = new ReportCommand(this);
+        Objects.requireNonNull(getCommand("report")).setExecutor(reportCmd);
+        Objects.requireNonNull(getCommand("report")).setTabCompleter(reportCmd);
     }
 
     public static KoalaManaging getInstance() { return instance; }
@@ -89,6 +101,8 @@ public class KoalaManaging extends JavaPlugin {
     public MuteManager getMuteManager() { return muteManager; }
     public FreezeManager getFreezeManager() { return freezeManager; }
     public WarnManager getWarnManager() { return warnManager; }
+    public ReportManager getReportManager() { return reportManager; }
+    public DiscordBot getDiscordBot() { return discordBot; }
 
     public String prefix() {
         return colorize(getConfig().getString("messages.prefix", "&8[&bKoala&8] &r"));
