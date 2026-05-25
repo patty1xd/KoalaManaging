@@ -55,6 +55,10 @@ commands:
     description: View a player's warnings
     usage: /warnings <player>
     permission: koala.warnings
+  report:
+    description: Report a player to staff (sent to Discord via bot)
+    usage: /report <player> <reason>
+    permission: koala.report
 
 permissions:
   koala.*:
@@ -72,6 +76,8 @@ permissions:
       koala.kick: true
       koala.warn: true
       koala.warnings: true
+      koala.report: true
+      koala.report.notify: true
   koala.tempban:
     description: Allows use of /tempban
     default: op
@@ -104,4 +110,10 @@ permissions:
     default: op
   koala.warnings:
     description: Allows use of /warnings
+    default: op
+  koala.report:
+    description: Allows use of /report
+    default: true
+  koala.report.notify:
+    description: Receive in-game alerts when reports are filed
     default: op

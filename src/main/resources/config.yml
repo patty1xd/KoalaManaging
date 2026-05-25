@@ -11,6 +11,38 @@ settings:
   freeze-blindness: true
 
 # -------------------------------------------------------
+# PLAYER REPORTS  (/report <player> <reason>)
+# -------------------------------------------------------
+report:
+  # Seconds a reporter must wait between reports
+  cooldown-seconds: 60
+  # Minimum length of the reason (prevents "/report x a")
+  min-reason-length: 4
+  # Alert online staff (koala.report.notify) in-game when a report fires
+  notify-staff: true
+
+# -------------------------------------------------------
+# DISCORD BOT
+# Setup:
+#  1. https://discord.com/developers/applications -> New Application -> Bot
+#  2. Reset Token -> copy it into bot-token below
+#  3. OAuth2 -> URL Generator -> scope: 'bot'
+#     permissions: 'Send Messages' + 'Embed Links'
+#  4. Invite the bot to your server with that URL.
+#  5. Right-click the channel reports should go to -> Copy Channel ID
+#     (Enable Developer Mode in Discord settings if you don't see it)
+#  6. Paste it into report-channel-id below.
+# -------------------------------------------------------
+discord:
+  bot-token: "YOUR_BOT_TOKEN_HERE"
+  report-channel-id: "YOUR_CHANNEL_ID"
+  report:
+    title: "New Player Report"
+    footer: "KoalaManaging"
+    # Embed left-bar color as a decimal int (15158332 = red)
+    color: 15158332
+
+# -------------------------------------------------------
 # CHAT FILTER
 # -------------------------------------------------------
 # Each entry: word -> mute duration (use 'none' for no mute, just block)
