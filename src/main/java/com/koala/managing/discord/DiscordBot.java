@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.awt.Color;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumSet;
 
@@ -82,8 +83,26 @@ public final class DiscordBot {
 
     public void shutdown() {
         ready = false;
-        if (jda != null) {
-            try { jda.shutdown(); } catch (Throwable ignored) {}
+        if (jda == null) return;
+
+        // JDA.shutdown() is async — it queues the shutdown but the websocket /
+        // rate-limit / gateway threads keep running. If we return here while
+        // any of them are mid-disconnect, they'll try to load a class from
+        // OUR plugin classloader after Bukkit has already closed our JAR,
+        // throwing "zip file closed". So block until JDA actually finishes.
+        try {
+            jda.shutdown();
+            if (!jda.awaitShutdown(Duration.ofSeconds(8))) {
+                // Took too long — force-kill remaining requests and wait briefly.
+                plugin.getLogger().warning("Discord bot didn't shut down in 8s; forcing.");
+                jda.shutdownNow();
+                jda.awaitShutdown(Duration.ofSeconds(2));
+            }
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        } catch (Throwable t) {
+            plugin.getLogger().warning("Discord bot shutdown error: " + t.getMessage());
+        } finally {
             jda = null;
         }
     }
