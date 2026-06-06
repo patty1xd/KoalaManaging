@@ -45,28 +45,20 @@ discord:
 # -------------------------------------------------------
 # CHAT FILTER
 # -------------------------------------------------------
-# Each entry: word -> mute duration (use 'none' for no mute, just block)
-# Duration format: 10s, 5m, 2h, 1d, 1w
+# Any message containing one of the banned words below is simply BLOCKED
+# (the message is cancelled and never sent). No automatic muting happens.
+# Add as many words as you like — just add another "- word" line.
 chat-filter:
   enabled: true
   block-message: "&cYour message was blocked by the chat filter."
-  mute-message: "&cYou have been automatically muted for &f{duration} &cfor using a blocked word."
-  notify-staff: true   # sends alert to anyone with koala.tempban permission
-  staff-notify-message: "&8[&cFilter&8] &7{player} &7triggered filter word '&f{word}&7' and was muted for &f{duration}&7."
 
-  words:
-    nigga:
-      mute: "1h"
-    nigger:
-      mute: "3h"
-    nga:
-      mute: "30m"
-    ngas:
-      mute: "30m"
-    rape:
-      mute: "1h"
-    retard:
-      mute: "30m"
+  banned-words:
+    - "nigga"
+    - "nigger"
+    - "nga"
+    - "ngas"
+    - "rape"
+    - "retard"
 
 # -------------------------------------------------------
 # AUTO BROADCAST
